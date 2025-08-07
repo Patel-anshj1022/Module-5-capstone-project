@@ -1,67 +1,61 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login as authLogin, register as authRegister, getCurrentUser } from '../services/auth';
+import { loginUser, registerUser, checkAuth } from '../services/auth';
+import { toast } from 'react-hot-toast';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('token'));
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const verifyAuth = async () => {
       try {
-        if (token) {
-          const userData = await getCurrentUser(token);
-          setUser(userData);
-        }
-      } catch (err) {
-        logout();
+        const userData = await checkAuth();
+        setUser(userData);
+      } catch (error) {
+        setUser(null);
       } finally {
         setLoading(false);
       }
     };
+    verifyAuth();
+  }, []);
 
-    fetchUser();
-  }, [token]);
-
-  const login = async (email, password) => {
-    const { access_token, user: userData } = await authLogin(email, password);
-    localStorage.setItem('token', access_token);
-    setToken(access_token);
-    setUser(userData);
-    navigate('/');
+  const login = async (credentials) => {
+    try {
+      const userData = await loginUser(credentials);
+      setUser(userData);
+      toast.success('Logged in successfully');
+      navigate('/dashboard');
+    } catch (error) {
+      toast.error(error.message || 'Login failed');
+      throw error;
+    }
   };
 
-  const register = async (username, email, password) => {
-    await authRegister(username, email, password);
-    navigate('/login');
+  const register = async (userData) => {
+    try {
+      await registerUser(userData);
+      toast.success('Account created successfully');
+      navigate('/login');
+    } catch (error) {
+      toast.error(error.message || 'Registration failed');
+      throw error;
+    }
   };
 
   const logout = () => {
     localStorage.removeItem('token');
-    setToken(null);
     setUser(null);
+    toast.success('Logged out successfully');
     navigate('/login');
   };
 
-  const updateTheme = (theme) => {
-    setUser({ ...user, theme_preference: theme });
-  };
-
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      token, 
-      loading, 
-      login, 
-      register, 
-      logout, 
-      updateTheme,
-      isAuthenticated: !!token 
-    }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );
