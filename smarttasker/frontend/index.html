@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SmartTasker — Login / Register</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <main class="centered">
+    <div class="card">
+      <h1 class="brand">SmartTasker</h1>
+
+      <div class="tabs">
+        <button id="tab-login" class="tab active">Login</button>
+        <button id="tab-register" class="tab">Register</button>
+      </div>
+
+      <div id="panel-login" class="panel">
+        <form id="login-form">
+          <label>Username or Email
+            <input type="text" id="login-identifier" required />
+          </label>
+          <label>Password
+            <input type="password" id="login-password" required />
+          </label>
+          <div class="actions">
+            <button type="submit" class="btn">Login</button>
+          </div>
+          <p class="error" id="login-error"></p>
+        </form>
+      </div>
+
+      <div id="panel-register" class="panel hidden">
+        <form id="register-form">
+          <label>Username
+            <input type="text" id="reg-username" required />
+          </label>
+          <label>Email
+            <input type="email" id="reg-email" required />
+          </label>
+          <label>Password
+            <input type="password" id="reg-password" required />
+          </label>
+          <div class="actions">
+            <button type="submit" class="btn">Create account</button>
+          </div>
+          <p class="error" id="reg-error"></p>
+        </form>
+      </div>
+
+    </div>
+    <p class="muted">ola Amigo!</p>
+  </main>
+
+  <script src="js/auth.js"></script>
+</body>
+</html>

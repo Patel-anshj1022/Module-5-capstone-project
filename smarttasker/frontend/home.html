@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SmartTasker — Home</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <nav class="topbar">
+    <div class="brand">SmartTasker</div>
+    <div id="user-info" class="user-info"></div>
+    <button id="logout-btn" class="btn small">Logout</button>
+  </nav>
+
+  <main class="home">
+    <section class="card">
+      <h2>Welcome</h2>
+      <p id="welcome-text">Loading...</p>
+      <hr />
+      <h3>Your tasks</h3>
+      <ul id="task-list"></ul>
+
+      <form id="task-form">
+        <label>New task
+          <input type="text" id="task-title" required />
+        </label>
+        <button class="btn" type="submit">Add task</button>
+      </form>
+      <p class="error" id="home-error"></p>
+    </section>
+  </main>
+
+  <script src="js/home.js"></script>
+</body>
+</html>
